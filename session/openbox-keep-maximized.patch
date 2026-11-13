@@ -1,0 +1,38 @@
+--- a/openbox/client.c
++++ b/openbox/client.c
+@@ -1897,10 +1897,17 @@
+     if (!(self->functions & OB_CLIENT_FUNC_RESIZE))
+         self->decorations &= ~(OB_FRAME_DECOR_GRIPS | OB_FRAME_DECOR_HANDLE);
+ 
+-    /* can't maximize without moving/resizing */
++    /* Wine disables manual resize once a window is maximized. Keep the
++       maximize state and restore button while it still allows maximize. */
++    gboolean keep_maximized =
++        (self->max_horz || self->max_vert) &&
++        (self->mwmhints.flags & OB_MWM_FLAG_FUNCTIONS) &&
++        !(self->mwmhints.functions & (OB_MWM_FUNC_ALL | OB_MWM_FUNC_RESIZE)) &&
++        (self->mwmhints.functions & OB_MWM_FUNC_MAXIMIZE);
++
+     if (!((self->functions & OB_CLIENT_FUNC_MAXIMIZE) &&
+           (self->functions & OB_CLIENT_FUNC_MOVE) &&
+-          (self->functions & OB_CLIENT_FUNC_RESIZE))) {
++          ((self->functions & OB_CLIENT_FUNC_RESIZE) || keep_maximized))) {
+         self->functions &= ~OB_CLIENT_FUNC_MAXIMIZE;
+         self->decorations &= ~OB_FRAME_DECOR_MAXIMIZE;
+     }
+@@ -3528,10 +3535,12 @@ void client_maximize(ObClient *self, gboolean max, gint dir)
+     if (max) {
+         /* make sure the window is on some monitor */
+         client_find_onscreen(self, &x, &y, w, h, FALSE);
++        client_change_state(self);
+     }
+ 
+-    client_change_state(self); /* change the state hints on the client */
+-
+     client_setup_decor_and_functions(self, FALSE);
+-    client_move_resize(self, x, y, w, h);
++    /* Restore the saved geometry even when manual resizing is disabled.
++       Wine reads the reported geometry when it sees the state change. */
++    client_configure(self, x, y, w, h, max, TRUE, !max);
++    if (!max) client_change_state(self);
+ }

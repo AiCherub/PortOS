@@ -1,0 +1,14 @@
+Backport Wine 10.20 commit 3f84ead3610a4dec8adb783a4b46f4d63e3ce954.
+https://bugs.winehq.org/show_bug.cgi?id=59012
+
+--- a/dlls/winex11.drv/window.c
++++ b/dlls/winex11.drv/window.c
+@@ -1644,6 +1644,8 @@ static UINT window_update_client_state( struct x11drv_win_data *data )
+         }
+     }
+ 
++    if (new_style & WS_MINIMIZE) return 0; /* window is still minimized, don't change maximized state */
++
+     if ((old_style & WS_CAPTION) == WS_CAPTION || !data->is_fullscreen)
+     {
+         if ((new_style & WS_MAXIMIZE) && !(old_style & WS_MAXIMIZE))

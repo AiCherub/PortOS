@@ -1,0 +1,18 @@
+# Local configuration (copy .env.example to .env and edit that instead)
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Screenshots produced by scripts/shot.py
+*.png
+out.png
+!web/branding/PortOS-Icon.png
+!session/PortOS-Wallpaper.png
+
+# Editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

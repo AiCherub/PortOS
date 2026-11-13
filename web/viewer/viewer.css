@@ -1,0 +1,103 @@
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --line: #262d36;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --accent: #3b82f6;
+  --danger: #f85149;
+  --ok: #3fb950;
+  /* The height of the bar at the bottom. The picture gets the rest, so the
+     remote screen is sized to what is really visible. */
+  --bar-h: 40px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+body.viewer {
+  overflow: hidden;
+  height: 100vh;
+}
+
+body.touch { --bar-h: 45px; }
+
+#stage {
+  position: fixed;
+  inset: 0 0 var(--bar-h) 0;
+  background: #000;
+}
+
+#screen {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+#screen > div { width: 100%; height: 100%; }
+
+/* The pointer on the screen is the visitor's own. The X server of the session
+   runs with -nocursor, so the picture carries no pointer at all - a pointer
+   that is drawn into the picture is always one round trip behind the mouse.
+   The browser draws the pointer of the visitor's own machine instead, and it
+   is exactly where the mouse is. noVNC hides the system pointer on the canvas
+   (it expects the remote one to be there), so it has to be given back. */
+#screen canvas { cursor: default !important; }
+
+/* The field the system input method composes its text in. It has to be a
+   real editable element and it has to keep the focus, or the visitor's input
+   method stops working - so it is invisible and it never eats a click. */
+#ime {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 2px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  opacity: 0;
+  caret-color: transparent;
+  pointer-events: none;
+  resize: none;
+  overflow: hidden;
+  font-size: 16px;
+  z-index: 5;
+}
+
+body.ended #stage { filter: grayscale(1) brightness(.5); }
+
+:where(#chrome, .confirm-actions) button,
+.overlay-link {
+  --label-inset: 10px;
+  position: relative;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--control-color, var(--muted));
+  padding: 0 var(--label-inset);
+  font-family: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+:where(#chrome, .confirm-actions) button::after,
+.overlay-link::after {
+  content: "";
+  position: absolute;
+  inset: auto var(--label-inset) 0;
+  border-bottom: var(--control-underline, none);
+  border-radius: 2px 2px 0 0;
+}

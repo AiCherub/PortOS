@@ -1,0 +1,81 @@
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: #0d1117;
+  z-index: 20;
+  transition: opacity .35s ease;
+}
+
+#overlay.gone {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .35s ease, visibility 0s .35s;
+}
+
+#overlay-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-inline: 16px;
+  text-align: center;
+}
+
+.spinner {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 14px;
+  border: 3px solid #262d36;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.overlay-title {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.overlay-sub {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.overlay-link {
+  --control-color: var(--accent);
+  margin-top: 18px;
+  text-decoration: none;
+}
+
+.overlay-link { min-height: 32px; }
+
+.overlay-link:is(:hover, :focus) {
+  --control-underline: 2px solid var(--control-color, var(--muted));
+  background: transparent;
+  outline: none;
+}
+
+body.touch .overlay-link { min-height: 44px; }
+
+.hint {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(22, 27, 34, .95);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  z-index: 11;
+}

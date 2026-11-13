@@ -1,0 +1,17 @@
+**
+!apps/
+!apps/**
+!session/
+!session/*.sh
+!session/*.py
+!session/fonts.conf
+!session/pulse.pa
+!session/PortOS-Wallpaper.png
+!session/*.patch
+!session/*.reg
+!session/redraw-window.c
+!session/themes/
+!session/themes/**
+!web/
+!web/**
+web/status/

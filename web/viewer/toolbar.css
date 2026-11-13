@@ -1,0 +1,225 @@
+/* The bar at the bottom: the windows of the session on the left, the button
+   that ends the session on the right. */
+#chrome {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--bar-h);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px 0 5px;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  z-index: 10;
+}
+
+:where(#chrome, .confirm-actions) button:enabled:hover {
+  background: #1c2430;
+  color: var(--control-color, var(--text));
+}
+
+:where(#chrome, .confirm-actions) button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* The windows of the session. There is no task bar in the session itself,
+   so this is the only place a window can be seen and called back. */
+#window-switcher {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+}
+
+#window-list {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+#window-list::-webkit-scrollbar { display: none; }
+
+#window-list:empty::before {
+  content: "会话里还没有窗口";
+  align-self: center;
+  margin-inline: 10px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+#window-list button {
+  flex: none;
+  max-width: min(280px, 100%);
+}
+
+@media (orientation: portrait) {
+  #window-list button { max-width: none; }
+}
+
+/* The window the program is working in right now. */
+:is(#window-list, #window-menu) button.focused {
+  --control-color: var(--text);
+  --control-underline: 2px solid var(--accent);
+}
+
+#window-list .window-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.window-icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+#window-toggle {
+  position: absolute;
+  inset: 0 auto 0 0;
+  max-width: 100%;
+  color: var(--text);
+}
+
+#window-toggle span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#window-toggle[hidden],
+#window-menu[hidden] { display: none; }
+
+/* Keep the hidden strip laid out so it can still be measured on resize. */
+#window-toggle:not([hidden]) + #window-list { visibility: hidden; }
+
+#window-toggle[aria-expanded="true"] {
+  --control-underline: 2px solid var(--accent);
+}
+
+#window-menu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  width: min(300px, calc(100vw - 13px));
+  max-height: min(55vh, calc(100vh - var(--bar-h) - 12px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+#window-menu button {
+  display: flex;
+  width: 100%;
+  min-height: 32px;
+  padding-block: 6px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.session-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+}
+
+.session-actions::before {
+  content: "";
+  width: 1px;
+  height: 16px;
+  margin-inline-end: 4px;
+  background: var(--line);
+}
+
+.session-actions button,
+.confirm-actions button { min-height: 32px; }
+
+#window-toggle svg,
+.session-actions svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+#end-session:enabled:is(:hover, :focus),
+.confirm-actions .danger {
+  --control-color: #ff7b72;
+}
+
+/* Opening the soft keyboard transfers focus to the IME field. */
+#ime:focus ~ #chrome #soft-keyboard,
+#soft-keyboard:enabled:focus,
+#end-session:enabled:is(:hover, :focus),
+.confirm-actions button:enabled:is(:hover, :focus) {
+  --control-underline: 2px solid var(--control-color, var(--muted));
+  background: transparent;
+  outline: none;
+}
+
+#end-session:disabled { opacity: .5; cursor: default; }
+
+#soft-keyboard:enabled:hover { background: transparent; }
+
+@media (any-hover: hover) {
+  #soft-keyboard:enabled:hover { --control-underline: 2px solid var(--muted); }
+}
+
+/* The soft keyboard of the visitor's own device. A phone or a tablet has
+   one, a desktop has not - so the button only shows up where it makes
+   sense. */
+body:not(.touch) #soft-keyboard { display: none; }
+
+body.touch #window-menu button,
+body.touch .session-actions button,
+body.touch .confirm-actions button { min-height: 44px; }
+
+/* The question before the session is ended. */
+#confirm {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 9, 14, .72);
+  z-index: 30;
+}
+
+#confirm[hidden] { display: none; }
+
+.confirm-box {
+  width: min(420px, calc(100vw - 48px));
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 24px 18px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .55);
+}
+
+.confirm-title {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.confirm-sub {
+  margin: 6px 0 18px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

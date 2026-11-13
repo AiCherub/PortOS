@@ -1,0 +1,73 @@
+name: portos
+
+services:
+  gateway:
+    build:
+      context: ./gateway
+    image: portos/gateway:latest
+    container_name: gateway
+    restart: unless-stopped
+    environment:
+      TZ: ${PORTOS_TZ:-${PORTOS_HOST_TZ:-Etc/UTC}}
+      PORTOS_NETWORK: portos
+      SESSION_INTERNET: ${SESSION_INTERNET:-true}
+      SESSION_AUDIO: ${SESSION_AUDIO:-true}
+      SESSION_CLIPBOARD: ${SESSION_CLIPBOARD:-both}
+      SESSION_WALLPAPER: ${SESSION_WALLPAPER:-PortOS-Wallpaper.png}
+      SESSION_WALLPAPER_MODE: ${SESSION_WALLPAPER_MODE:-center}
+      PORTOS_IMAGE: ${SESSION_IMAGE:-portos/session:latest}
+      PORTOS_APPS_DIR: /apps
+      PORTOS_WEB_DIR: /web
+      MAX_SESSIONS: ${MAX_SESSIONS:-4}
+      SESSION_TTL: ${SESSION_TTL:-3600}
+      SESSION_MEMORY: ${SESSION_MEMORY:-1200m}
+      MAX_CONTAINERS: ${MAX_CONTAINERS:-0}
+      INIT_W: ${INIT_W:-1280}
+      INIT_H: ${INIT_H:-720}
+      MAX_W: ${MAX_W:-2560}
+      MAX_H: ${MAX_H:-1440}
+      RESET_GRACE: ${RESET_GRACE:-120}
+      BOOT_GRACE: ${BOOT_GRACE:-180}
+      BYE_GRACE: ${BYE_GRACE:-15}
+      READY_TIMEOUT: ${READY_TIMEOUT:-90}
+      SETUP_GRACE: ${SETUP_GRACE:-300}
+      COOKIE_MAX_AGE: ${COOKIE_MAX_AGE:-86400}
+      WARM_POOL: ${WARM_POOL:-1}
+      WARM_MAX_AGE: ${WARM_MAX_AGE:-1800}
+      WARM_INTERVAL: ${WARM_INTERVAL:-3}
+      REQUEUE_GRACE: ${REQUEUE_GRACE:-120}
+      STALE_GRACE: ${STALE_GRACE:-15}
+      FIT_MODE: ${FIT_MODE:-natural}
+      PORT: "8081"
+      PORTOS_TIMING: ${PORTOS_TIMING:-0}
+    ports:
+      - "${PORTOS_BIND:-0.0.0.0}:${PORTOS_PORT:-8081}:8081"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./apps:/apps:ro
+      - ./web:/web:ro
+      - ./session:/session:ro
+      - ./scripts:/app/scripts:ro
+    networks: [portos, portos-isolated]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/healthz', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: ${SERVER_MEMORY:-512m}
+
+networks:
+  portos:
+    name: portos
+    driver: bridge
+  portos-isolated:
+    name: portos-isolated
+    driver: bridge
+    internal: true
+    enable_ipv6: false
+    driver_opts:
+      com.docker.network.bridge.gateway_mode_ipv4: isolated

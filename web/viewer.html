@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PortOS · 运行中</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="viewer/viewer.css">
+<link rel="stylesheet" href="viewer/toolbar.css">
+<link rel="stylesheet" href="viewer/feedback.css">
+<link rel="stylesheet" href="branding/splash.css">
+</head>
+<body class="viewer">
+  <div id="stage">
+    <div id="screen"></div>
+  </div>
+
+  <!-- The input method on the visitor's own machine has to compose its text
+       somewhere in the page. This field is that somewhere: it is invisible,
+       it never takes clicks, and it follows the mouse so that the candidate
+       window of the system input method shows up next to the pointer. -->
+  <textarea id="ime" autocomplete="off" autocorrect="off" autocapitalize="off"
+            spellcheck="false" tabindex="-1" aria-hidden="true"></textarea>
+
+  <div id="overlay" class="portos-splash-layout">
+    <div id="overlay-status" class="portos-splash-content">
+      <div class="spinner"></div>
+      <p class="overlay-title">正在启动运行环境…</p>
+      <p class="overlay-sub">每个访客都会得到一个全新的独立环境</p>
+    </div>
+    <footer class="portos-splash">
+      <img src="branding/PortOS-Icon.png" width="36" height="36" alt="">
+      <span>PortOS</span>
+    </footer>
+  </div>
+
+  <!-- The bar at the bottom. It lists the windows of the session - there is
+       no desktop and no task bar in there, so this is how a window that was
+       put away gets found again - and it holds the buttons that end the
+       session and that open the soft keyboard of a phone or a tablet. -->
+  <div id="chrome">
+    <div id="window-switcher">
+      <button id="window-toggle" type="button" aria-controls="window-menu" aria-expanded="false" hidden>
+        <span id="window-count"></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="m6 15 6-6 6 6"/>
+        </svg>
+      </button>
+      <div id="window-list" role="group" aria-label="会话窗口"></div>
+      <div id="window-menu" role="group" aria-label="会话窗口" hidden></div>
+    </div>
+    <div class="session-actions">
+      <button id="soft-keyboard" type="button" title="打开软键盘">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="2" y="6" width="20" height="12" rx="2"/>
+          <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M10 14h4M18 14h.01"/>
+        </svg>
+        弹出键盘
+      </button>
+      <button id="end-session" type="button" title="销毁本次会话">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M10 17v3H4V4h6v3M9 12h12m-4-4 4 4-4 4"/>
+        </svg>
+        结束会话
+      </button>
+    </div>
+  </div>
+
+  <!-- Ending the session throws the environment away, so it takes a second
+       to say yes. A mis-tap on a phone must not do that. -->
+  <div id="confirm" hidden>
+    <div class="confirm-box" role="dialog" aria-modal="true"
+         aria-labelledby="confirm-title">
+      <p class="confirm-title" id="confirm-title">确认要结束会话吗？</p>
+      <p class="confirm-sub">运行环境会被销毁，会话里的程序也会关闭。</p>
+      <div class="confirm-actions">
+        <button id="confirm-cancel" type="button">取消</button>
+        <button id="confirm-ok" type="button" class="danger">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="hint" class="hint" role="status" aria-live="polite" hidden></div>
+
+  <script type="module" src="viewer/viewer.js"></script>
+</body>
+</html>

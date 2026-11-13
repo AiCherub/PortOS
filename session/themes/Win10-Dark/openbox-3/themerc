@@ -1,0 +1,85 @@
+! Win10 Dark for Openbox 3
+
+border.width: 1
+padding.width: 10
+padding.height: 4
+window.client.padding.width: 0
+window.client.padding.height: 0
+window.handle.width: 0
+window.label.text.justify: left
+
+window.active.title.bg: flat solid
+window.active.title.bg.color: #000000
+window.active.title.separator.color: #242424
+window.active.border.color: #404040
+window.active.label.bg: parentrelative
+window.active.label.text.color: #f5f5f5
+
+window.inactive.title.bg: flat solid
+window.inactive.title.bg.color: #181818
+window.inactive.title.separator.color: #292929
+window.inactive.border.color: #303030
+window.inactive.label.bg: parentrelative
+window.inactive.label.text.color: #aaaaaa
+
+window.*.button.unpressed.bg: parentrelative
+window.*.button.disabled.bg: parentrelative
+window.*.button.toggled.unpressed.bg: parentrelative
+window.active.button.unpressed.image.color: #f2f2f2
+window.active.button.toggled.unpressed.image.color: #f2f2f2
+window.inactive.button.unpressed.image.color: #aaaaaa
+window.inactive.button.toggled.unpressed.image.color: #aaaaaa
+window.*.button.disabled.image.color: #5e5e5e
+
+window.*.button.hover.bg: flat solid
+window.*.button.hover.bg.color: #303030
+window.*.button.hover.image.color: #ffffff
+window.*.button.pressed.bg: flat solid
+window.*.button.pressed.bg.color: #464646
+window.*.button.pressed.image.color: #ffffff
+window.*.button.toggled.hover.bg: flat solid
+window.*.button.toggled.hover.bg.color: #303030
+window.*.button.toggled.hover.image.color: #ffffff
+window.*.button.toggled.pressed.bg: flat solid
+window.*.button.toggled.pressed.bg.color: #464646
+window.*.button.toggled.pressed.image.color: #ffffff
+
+window.*.button.close.hover.bg: flat solid
+window.*.button.close.hover.bg.color: #e81123
+window.*.button.close.hover.image.color: #ffffff
+window.*.button.close.pressed.bg: flat solid
+window.*.button.close.pressed.bg.color: #b50d1b
+window.*.button.close.pressed.image.color: #ffffff
+
+menu.border.width: 1
+menu.border.color: #525252
+menu.overlap.x: 0
+menu.overlap.y: 0
+menu.separator.width: 1
+menu.separator.padding.width: 5
+menu.separator.padding.height: 4
+menu.separator.color: #404040
+
+menu.title.bg: flat solid
+menu.title.bg.color: #181818
+menu.title.text.color: #f2f2f2
+menu.title.text.justify: left
+menu.items.bg: flat solid
+menu.items.bg.color: #202020
+menu.items.text.color: #f2f2f2
+menu.items.disabled.text.color: #818181
+menu.items.active.bg: flat solid
+menu.items.active.bg.color: #414141
+menu.items.active.text.color: #ffffff
+menu.items.active.disabled.text.color: #aaaaaa
+
+osd.border.width: 1
+osd.border.color: #525252
+osd.bg: flat solid
+osd.bg.color: #202020
+osd.label.bg: parentrelative
+osd.label.text.color: #f2f2f2
+osd.hilight.bg: flat solid
+osd.hilight.bg.color: #5c5c5c
+osd.unhilight.bg: flat solid
+osd.unhilight.bg.color: #323232

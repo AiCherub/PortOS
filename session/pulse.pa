@@ -1,0 +1,5 @@
+.fail
+load-module module-native-protocol-unix socket=/tmp/runtime/pulse/native auth-anonymous=1
+load-module module-null-sink sink_name=portos rate=48000 channels=2 sink_properties=device.description=PortOS
+set-default-sink portos
+set-default-source portos.monitor
